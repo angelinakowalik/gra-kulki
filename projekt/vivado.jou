@@ -1,0 +1,15 @@
+#-----------------------------------------------------------
+# Vivado v2017.3 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Fri May 11 20:47:39 2018
+# Process ID: 7976
+# Current directory: C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent8668 C:\Users\Weronika\Documents\Studia\Semestr IV\Ukady elektroniki cyfrowej 2\gra\projekt\projekt.xpr
+# Log file: C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt/vivado.log
+# Journal file: C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project {C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt/projekt.xpr}
+update_compile_order -fileset sources_1
+archive_project {C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt.xpr.zip} -temp_dir {C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra/projekt/.Xil/Vivado-7976-LAPTOP-N7HI4IMG} -force -exclude_run_results -include_local_ip_cache

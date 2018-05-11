@@ -1,0 +1,6 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Vivado/WeronikaPotaczek/nowy/vga/vga.srcs/sources_1/imports/lab_3/MouseCtl.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MouseCtl
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Vivado/WeronikaPotaczek/nowy/vga/vga.srcs/sources_1/imports/zajecia_3/MouseDisplay.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MouseDisplay
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Vivado/WeronikaPotaczek/nowy/vga/vga.srcs/sources_1/imports/lab_3/Ps2Interface.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Ps2Interface
