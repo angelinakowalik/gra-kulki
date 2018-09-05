@@ -29,9 +29,7 @@ module draw_ball_color(
     input wire [11:0]   rgb_pixel,
     
     output wire [`VGA_BUS_SIZE - 1:0] vga_out,
-    output reg [11:0]   pixel_addr,
-    output reg ball_en,
-    output reg random_en
+    output reg [11:0]   pixel_addr
     );
     
     `VGA_INPUT(vga_in)
@@ -44,10 +42,10 @@ module draw_ball_color(
                 BALL_SIZE   = 50,
                 DRAW_BALL = (SQUARE_SIZE/2) - (BALL_SIZE/2);
                     
-    reg [5:0] addrx = 0, addry = 0;
-    reg [6:0] column = 0, row = 0;
-    reg [11:0] rgb_nxt = 0, rgb_out_nxt = 0;
-    reg [1:0] color_nxt = 2'b0;
+    reg [5:0] addrx, addry ;
+    reg [6:0] column, row;
+    reg [11:0] rgb_out_nxt, rgb_nxt;
+//    reg [1:0] color_nxt = 2'b0;
     
     reg [10:0] hcount_temp, vcount_temp;
     reg hsync_temp, vsync_temp, hblnk_temp, vblnk_temp;  
@@ -71,8 +69,9 @@ module draw_ball_color(
             vcount_out  <= 0;
             vsync_out   <= 0;
             vblnk_out   <= 0;            
-            
-            rgb_out_nxt <= 0;
+             
+            rgb_nxt     <= 0;           
+            //rgb_out_nxt <= 0;
             rgb_out     <= 0;
             pixel_addr  <= 0;
         end
@@ -91,7 +90,8 @@ module draw_ball_color(
             vsync_out   <= vsync_temp;
             vblnk_out   <= vblnk_temp;            
             
-            rgb_out_nxt <= rgb_nxt;
+            rgb_nxt     <= rgb_in;
+            //rgb_out_nxt <= rgb_nxt;
             rgb_out     <= rgb_out_nxt;
             pixel_addr  <= {addry, addrx};
         end
@@ -100,25 +100,27 @@ module draw_ball_color(
     always @*
     begin
             addrx = hcount_in;
-            addry = vcount_in;
+            addry = vcount_in - SQUARE_SIZE/2;
             
-            rgb_nxt = rgb_in;
-            
-            ball_en = 1'b1;
-            random_en = 1'b0;     
+            rgb_out_nxt = rgb_nxt;    
+            column = 0;
+            row = 0; 
                     
             for(i = 0; i < 64; i = i + 1)
             begin
                 if(color_in[i] == 1) begin
                     row = (i >> 3) + 1;
                     column = i - (row - 1)*8 + 1;            
-                    if ((hcount_in >= LEFT + SQUARE_SIZE*(column - 1) + DRAW_BALL) &&
-                        (hcount_in <= LEFT + SQUARE_SIZE*(column - 1) + DRAW_BALL + BALL_SIZE) &&
-                        (vcount_in >= UP + SQUARE_SIZE*(row - 1) + DRAW_BALL) &&
-                        (vcount_in <= UP + SQUARE_SIZE*(row - 1) + DRAW_BALL + BALL_SIZE) &&
+                    if ((hcount_temp >= LEFT + SQUARE_SIZE*(column - 1) + DRAW_BALL) &&
+                        (hcount_temp <= LEFT + SQUARE_SIZE*(column - 1) + DRAW_BALL + BALL_SIZE) &&
+                        (vcount_temp >= UP + SQUARE_SIZE*(row - 1) + DRAW_BALL) &&
+                        (vcount_temp <= UP + SQUARE_SIZE*(row - 1) + DRAW_BALL + BALL_SIZE) &&
                         !(vblnk_in || hblnk_in))
                         begin
-                            rgb_nxt = rgb_pixel;
+                            if(rgb_pixel == 12'hf_f_f)
+                                rgb_out_nxt = rgb_nxt;
+                            else
+                                rgb_out_nxt = rgb_pixel;
                         end
                 end
             end

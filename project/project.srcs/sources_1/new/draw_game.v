@@ -20,6 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "_vga_macros.vh"
+`include "_color_macros.vh"
 
 module draw_game(
     input wire pclk,
@@ -30,19 +31,15 @@ module draw_game(
     input wire [11:0] ypos,
     input wire [11:0] score,
     input wire [5:0] random_color,
-    input wire [63:0] color_r,
-    input wire [63:0] color_b,
-    input wire [63:0] color_g,
-    input wire [63:0] color_y,
+    input wire [`COLOR_BUS_SIZE - 1:0] color_reg,
     input wire [`VGA_BUS_SIZE - 1:0] vga_in,
     
     output wire [`VGA_BUS_SIZE - 1:0] vga_out
     );
     
     wire [`VGA_BUS_SIZE - 1:0] bg2b_vga, b2r_vga, r2l_vga, l2s_vga, s2c_vga;
-    wire [11:0] address_ball, address_random;
+    wire [47:0] address;
     wire [11:0] rgb_pixel_r, rgb_pixel_b, rgb_pixel_g, rgb_pixel_y;
-    wire ball_en, random_en;
 
 // ---------------------------------------------------------------
     
@@ -50,6 +47,7 @@ module draw_game(
             .pclk(pclk),
             .rst(rst),
             .vga_in(vga_in),
+            
             .vga_out(bg2b_vga)
         );        
 
@@ -57,10 +55,7 @@ module draw_game(
 
     color_ball my_color (
         .pclk(pclk),
-        .address_ball(address_ball),
-        .address_random(address_random),
-        .ball_en(ball_en),
-        .random_en(random_en),
+        .address(address),
     
         .rgb_pixel_r(rgb_pixel_r),
         .rgb_pixel_b(rgb_pixel_b),
@@ -74,38 +69,41 @@ module draw_game(
         .pclk(pclk),
         .rst(rst),
         .vga_in(bg2b_vga),
-        .color_r(color_r),
-        .color_b(color_b),
-        .color_g(color_g),
-        .color_y(color_y),
+        .color_reg(color_reg),
         .rgb_pixel_r(rgb_pixel_r),
         .rgb_pixel_b(rgb_pixel_b),
         .rgb_pixel_g(rgb_pixel_g),
         .rgb_pixel_y(rgb_pixel_y),
         
         .vga_out(b2r_vga),
-        .pixel_addr(address_ball),
-        .ball_en(ball_en),
-        .random_en(random_en)
+        .pixel_addr(address)
     );
     
 // ---------------------------------------------------------------
 
-    draw_random_ball my_random (
+    draw_random (
         .pclk(pclk),
         .rst(rst),
         .vga_in(b2r_vga),   
         .color_in(random_color),
-        .rgb_pixel_r(rgb_pixel_r),
-        .rgb_pixel_b(rgb_pixel_b),
-        .rgb_pixel_g(rgb_pixel_g),
-        .rgb_pixel_y(rgb_pixel_y),
     
-        .vga_out(r2l_vga),
-        .address_random(address_random),
-        .ball_en(ball_en),
-        .random_en(random_en)
+        .vga_out(r2l_vga)
     );
+//    draw_random_ball my_random (
+//        .pclk(pclk),
+//        .rst(rst),
+//        .vga_in(b2r_vga),   
+//        .color_in(random_color),
+//        .rgb_pixel_r(rgb_pixel_r),
+//        .rgb_pixel_b(rgb_pixel_b),
+//        .rgb_pixel_g(rgb_pixel_g),
+//        .rgb_pixel_y(rgb_pixel_y),
+    
+//        .vga_out(r2l_vga),
+//        .address_random(address_random),
+//        .ball_en(ball_en),
+//        .random_en(random_en)
+//    );
 
 // ---------------------------------------------------------------
     draw_letters my_letters (

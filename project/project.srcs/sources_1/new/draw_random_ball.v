@@ -24,17 +24,11 @@
 module draw_random_ball(
     input wire          pclk,
     input wire          rst,
-    input wire [`VGA_BUS_SIZE - 1:0] vga_in,   
-    input wire [5:0]    color_in,
-    input wire [11:0]   rgb_pixel_r,
-    input wire [11:0]   rgb_pixel_b,
-    input wire [11:0]   rgb_pixel_g,
-    input wire [11:0]   rgb_pixel_y,
+    input wire [`VGA_BUS_SIZE - 1:0] vga_in,
+    input wire [35:0]    rgb_pixel,
     
     output wire [`VGA_BUS_SIZE - 1:0] vga_out,
-    output reg [11:0]   address_random,
-    output reg random_en,
-    output reg ball_en
+    output reg [11:0]   address_random
     );
     
     `VGA_INPUT(vga_in)
@@ -49,7 +43,7 @@ module draw_random_ball(
                 LINE_COLOR  = 12'h0_0_0;
                 
     integer i;
-    reg [11:0] rgb_out_nxt = 0;
+    reg [11:0] rgb_out_nxt = 0, rgb_nxt;
     reg [5:0] addrx = 0, addry = 0;
     
     always @(posedge pclk)
@@ -64,6 +58,7 @@ module draw_random_ball(
             vblnk_out <= 0;
                   
             rgb_out <= 0;
+            rgb_nxt <= 0;
             address_random <= 0;
         end
         else begin
@@ -73,18 +68,17 @@ module draw_random_ball(
             vcount_out <= vcount_in;                  
             vsync_out <= vsync_in;
             vblnk_out <= vblnk_in;
-                  
+            
+            rgb_nxt <= rgb_in;      
             rgb_out <= rgb_out_nxt;
             address_random  <= {addry, addrx};
         end
     end
 
     always @* begin
-            addrx = hcount_in;
-            addry = vcount_in;
-            rgb_out_nxt = rgb_out;
-            random_en = 1'b1;
-            ball_en = 1'b0;
+            addrx = hcount_in - SQUARE_SIZE/2 + 2;
+            addry = vcount_in - SQUARE_SIZE/2;
+            rgb_out_nxt = rgb_nxt;
             
             if     ((hcount_in >= (LEFT - 3)) && 
     				(hcount_in <= (LEFT + 3*SQUARE_SIZE + 3)) &&
@@ -115,26 +109,20 @@ module draw_random_ball(
                     (vcount_in >= (UP + DRAW_BALL)) &&
                     (vcount_in <= (UP + DRAW_BALL + BALL_SIZE)))
                     begin
-                        case(color_in[5:4])
-                            2'b00:      rgb_out_nxt = rgb_pixel_r;
-                            2'b01:      rgb_out_nxt = rgb_pixel_b;
-                            2'b10:      rgb_out_nxt = rgb_pixel_g;
-                            2'b11:      rgb_out_nxt = rgb_pixel_y;
-                            default:    rgb_out_nxt = rgb_out;
-                        endcase
+                        if(rgb_pixel[35:24] == 12'hf_f_f)
+                            rgb_out_nxt = rgb_nxt;
+                        else
+                            rgb_out_nxt = rgb_pixel[35:24];
                     end
             else if((hcount_in >= (LEFT + DRAW_BALL + SQUARE_SIZE)) &&
                     (hcount_in <= (LEFT + DRAW_BALL + SQUARE_SIZE + BALL_SIZE)) &&
                     (vcount_in >= (UP + DRAW_BALL)) &&
                     (vcount_in <= (UP + DRAW_BALL + BALL_SIZE)))
                     begin
-                        case(color_in[3:2])
-                            2'b00:      rgb_out_nxt = rgb_pixel_r;
-                            2'b01:      rgb_out_nxt = rgb_pixel_b;
-                            2'b10:      rgb_out_nxt = rgb_pixel_g;
-                            2'b11:      rgb_out_nxt = rgb_pixel_y;
-                            default:    rgb_out_nxt = rgb_out;                        
-                        endcase
+                        if(rgb_pixel[23:12] == 12'hf_f_f)
+                            rgb_out_nxt = rgb_nxt;                    
+                        else
+                            rgb_out_nxt = rgb_pixel[23:12];
                     end
                     
             else if((hcount_in >= (LEFT + DRAW_BALL + SQUARE_SIZE*2)) &&
@@ -142,15 +130,12 @@ module draw_random_ball(
                     (vcount_in >= (UP + DRAW_BALL)) &&
                     (vcount_in <= (UP + DRAW_BALL + BALL_SIZE)))
                     begin
-                        case(color_in[1:0])
-                            2'b00:      rgb_out_nxt = rgb_pixel_r;
-                            2'b01:      rgb_out_nxt = rgb_pixel_b;
-                            2'b10:      rgb_out_nxt = rgb_pixel_g;
-                            2'b11:      rgb_out_nxt = rgb_pixel_y;
-                            default:    rgb_out_nxt = rgb_out;
-                        endcase
+                        if(rgb_pixel[11:0] == 12'hf_f_f)
+                            rgb_out_nxt = rgb_nxt;                    
+                        else
+                            rgb_out_nxt = rgb_pixel[11:0];
                     end					
-    		else rgb_out_nxt = rgb_in;
+    		else rgb_out_nxt = rgb_nxt;
     end     
 endmodule
     

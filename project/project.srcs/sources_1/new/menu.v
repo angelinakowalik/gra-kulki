@@ -25,6 +25,7 @@ module menu (
 	input wire rst,
 	input wire game_en,
 	input wire end_en,
+	input wire mouse_left,
 
 	output reg start_mode,
 	output reg game_mode,
@@ -57,10 +58,10 @@ reg start_mode_nxt, game_mode_nxt, end_mode_nxt;
 
 	always @* begin
 		case(state)
-			START:   state_nxt = game_en ?   GAME : START;
-			GAME:    state_nxt = end_en  ?   END  : GAME;
-			END:     state_nxt =             START;
-			default: state_nxt =             START;
+			START:   state_nxt = game_en     ?   GAME : START;
+			GAME:    state_nxt = end_en      ?   END  : GAME;
+			END:     state_nxt = mouse_left  ?   START : END;
+			default: state_nxt =                 START;
 		endcase
 	end
 	always @*

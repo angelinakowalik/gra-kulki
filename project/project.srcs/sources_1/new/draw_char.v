@@ -38,13 +38,15 @@ module draw_char(
     
 localparam  TEXTRECT_WIDTH = 16,
             TEXTRECT_HIGH = 16,
-            TEXT_COLOR = 12'hf_f_f,
+            TEXT_COLOR = 12'h0_0_0,
             TEXT_POSITION_X = 80,
             TEXT_POSITION_Y = 0,
             RECT_Y           = 11'd30,
             RECT_X           = 11'd30,
             HEIGHT           = 256,
-            WIDTH            = 128;
+            WIDTH            = 128,
+            X_POS            = 290,
+            Y_POS            = 180;
     
     reg [3:0]   pixel_index;
     reg [11:0]  rgb_out_nxt = 0, rgb_in_nxt = 0, rgb_nxt = 0, rgb_temp = 0;
@@ -81,12 +83,12 @@ localparam  TEXTRECT_WIDTH = 16,
         pixel_index     = 0;
         rgb_out_nxt     = rgb_in_nxt; 
         char_xy_nxt     = char_xy;
-        hcount_temp      = hcount_in - 300;    
-        vcount_temp      = vcount_in - 200;  
+        hcount_temp      = hcount_in - X_POS;   
+        vcount_temp      = vcount_in - Y_POS;
         
         if((hcount_out >= TEXT_POSITION_X) && (hcount_out < TEXT_POSITION_X+8*TEXTRECT_WIDTH) && (vcount_out >= TEXT_POSITION_Y) && (vcount_out < TEXT_POSITION_Y + 16*TEXTRECT_HIGH) ) 
         begin
-            pixel_index = (hcount_out - 300)% 8;
+            pixel_index = (hcount_out - X_POS)% 8;
             if( char_pixel[7-pixel_index] == 1)    rgb_out_nxt = TEXT_COLOR; 
             //else rgb_out_nxt = rgb_nxt;
         end

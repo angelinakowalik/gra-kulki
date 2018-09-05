@@ -42,7 +42,7 @@
 Section (1) - PROJECT INFORMATION
 ---------------------------------
 Name      = project
-Directory = C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra_3/Angelina/11_08_2018_22_32/07_08_18_godz_21_10_2/project
+Directory = F:/MTM/semestr4/UEC/Gra_Kulki/ver2/od weroniki/04_09_godz_20_52.xpr/project
 
 WARNING: Please verify the compiled library directory path for the following property in the
          current project. The path may point to an invalid location after opening this project.
@@ -93,7 +93,7 @@ None
 None
 
 <sources_1>
-C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra_3/Angelina/11_08_2018_22_32/07_08_18_godz_21_10_2/project/archive_project_summary.txt
+F:/MTM/semestr4/UEC/Gra_Kulki/ver2/od weroniki/04_09_godz_20_52.xpr/project/archive_project_summary.txt
 
 Section (3.3) - SOURCES SUMMARY
 -------------------------------
@@ -121,6 +121,8 @@ List of all the source files present in the archived project:-
 ./project.srcs/sources_1/new/ball_ctl.v
 ./project.srcs/sources_1/imports/gra_3/bcd2sseg.v
 ./project.srcs/sources_1/new/char_rom_16x16.v
+./project.srcs/sources_1/new/char_rom_end.v
+./project.srcs/sources_1/new/_color_macros.vh
 ./project.srcs/sources_1/new/check_empty.v
 ./project.srcs/sources_1/new/color_ball.v
 ./project.srcs/sources_1/new/control_ms.v
@@ -133,11 +135,16 @@ List of all the source files present in the archived project:-
 ./project.srcs/sources_1/new/draw_ball.v
 ./project.srcs/sources_1/new/draw_ball_color.v
 ./project.srcs/sources_1/new/draw_char.v
+./project.srcs/sources_1/new/draw_char_end.v
 ./project.srcs/sources_1/new/draw_digit.v
+./project.srcs/sources_1/new/draw_end.v
+./project.srcs/sources_1/new/draw_end_back.v
 ./project.srcs/sources_1/new/draw_game.v
 ./project.srcs/sources_1/new/draw_letters.v
+./project.srcs/sources_1/new/draw_random.v
 ./project.srcs/sources_1/new/draw_random_ball.v
 ./project.srcs/sources_1/new/draw_score.v
+./project.srcs/sources_1/new/draw_score_end.v
 ./project.srcs/sources_1/new/draw_start.v
 ./project.srcs/sources_1/new/find_random_empty.v
 ./project.srcs/sources_1/new/find_random_top.v
@@ -171,6 +178,10 @@ List of all the source files present in the archived project:-
 ./project.srcs/sources_1/imports/src/green.data
 ./project.srcs/sources_1/imports/src/blue.data
 ./project.srcs/sources_1/imports/project_07_06_18/archive_project_summary.txt
+./project.srcs/sources_1/imports/od weroniki/04_09_18_godz_7_12.xpr/project/archive_project_summary.txt
+./project.srcs/sources_1/imports/od weroniki/ball_yellow.data
+./project.srcs/sources_1/imports/od weroniki/04_09_18_godz_7_12.xpr/yel_ball.data
+./project.srcs/sources_1/imports/od weroniki/04_09_18_godz_7_12.xpr/ball_50.data
 ./project.srcs/sources_1/imports/project/archive_project_summary.txt
 
 <constrs_1>
@@ -190,9 +201,9 @@ Section (4) - JOURNAL/LOG FILES
 -------------------------------
 List of Journal/Log files that were added to the archived project:-
 
-Source File = C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra_3/Angelina/11_08_2018_22_32/07_08_18_godz_21_10_2/project/vivado.jou
+Source File = C:/Users/Angelina/AppData/Roaming/Xilinx/Vivado/vivado.jou
 Archived Location = ./project/vivado.jou
 
-Source File = C:/Users/Weronika/Documents/Studia/Semestr IV/Ukady elektroniki cyfrowej 2/gra_3/Angelina/11_08_2018_22_32/07_08_18_godz_21_10_2/project/vivado.log
+Source File = C:/Users/Angelina/AppData/Roaming/Xilinx/Vivado/vivado.log
 Archived Location = ./project/vivado.log
 

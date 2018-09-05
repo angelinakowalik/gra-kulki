@@ -20,10 +20,10 @@ reg [11:0] green [0: IMAGE_SIZE];
 reg [11:0] yellow [0: IMAGE_SIZE];
 
 
-initial $readmemh("red.data", red); 
-initial $readmemh("blue.data", blue); 
-initial $readmemh("green.data", green); 
-initial $readmemh("yellow.data", yellow); 
+initial $readmemh("ball_r.data", red); 
+initial $readmemh("ball_b.data", blue); 
+initial $readmemh("ball_g.data", green); 
+initial $readmemh("ball_y.data", yellow); 
 
 	always @(posedge clk)
 	begin

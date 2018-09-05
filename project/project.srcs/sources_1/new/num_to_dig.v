@@ -22,6 +22,7 @@
 
 module num_to_dig(
     input wire [9:0] number,
+    
     output wire [11:0] digits
     );
     

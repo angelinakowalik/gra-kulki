@@ -39,6 +39,7 @@ module draw_letters(
     font_rom my_font (
         .clk(pclk),
         .addr({r2f_char_code[6:0], c2f_char_line[3:0]}),
+        
         .char_line_pixels(f2c_char_pixel)
     );
     
@@ -46,6 +47,7 @@ module draw_letters(
 
     char_rom_16x16 my_char_rom (
         .char_xy(c2r_char_xy),
+        
         .char_code(r2f_char_code)
     );
 

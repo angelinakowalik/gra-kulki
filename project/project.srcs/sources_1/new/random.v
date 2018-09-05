@@ -23,16 +23,12 @@
 module random #(parameter WIDTH = 7, DIV = 7) (
     input wire clk,
     input wire rst,
-//    input wire enable,
     input wire [(DIV - 1):0] divider,
     output wire [(WIDTH - 1):0] random_number1,
     output wire [(WIDTH - 1):0] random_number2,
     output wire [(WIDTH - 1):0] random_number3
-    
-//    output reg done
+
     );
-    
-//    reg [(WIDTH - 1) : 0] random_number_nxt, random_number_temp;
     
     reg [6:0] random, random_next, random_done;
     reg [3:0] count, count_next; //to keep track of the shifts
@@ -43,7 +39,6 @@ module random #(parameter WIDTH = 7, DIV = 7) (
     begin
          if (rst)
          begin
-//         done <= 0;
           random <= 7'hF; //An LFSR cannot have an all 0 state, thus reset to FF
           count <= 0;
          end
@@ -56,7 +51,6 @@ module random #(parameter WIDTH = 7, DIV = 7) (
     end
      
     always @ (*)
-//    if(enable) begin
     begin
      random_next = random; //default state stays the same
      count_next = count;
@@ -68,9 +62,9 @@ module random #(parameter WIDTH = 7, DIV = 7) (
      begin
       count_next = 0;
       random_done = random; //assign the random number to output after 13 shifts
-//      done = 1'b1;
-//     end
       end
+      else
+        random_done = random;
     end
           
     assign random_number1 = random_done % divider;

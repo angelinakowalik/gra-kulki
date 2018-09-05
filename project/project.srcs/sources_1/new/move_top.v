@@ -19,6 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`include "_color_macros.vh"
 
 module move_top(
     input wire clk,
@@ -27,19 +28,14 @@ module move_top(
     input wire [11:0] mouse_xpos,
     input wire [11:0] mouse_ypos,
     input wire mouse_left,
-    input wire [63:0] color_r_in,
-    input wire [63:0] color_b_in,
-    input wire [63:0] color_g_in,
-    input wire [63:0] color_y_in,
+    input wire [`COLOR_BUS_SIZE - 1:0] color_in,
     
-    output wire [63:0] color_r,
-    output wire [63:0] color_b,
-    output wire [63:0] color_g,
-    output wire [63:0] color_y,    
+    output wire [`COLOR_BUS_SIZE - 1:0] color_out,  
     output wire [1:0] transfer_color,
     output wire transfer,
     output wire move_end
     );
+    
     
     wire [3:0] column, row, column_out, row_out, column_del, row_del;
     wire [1:0] transfer_color_in;
@@ -66,10 +62,7 @@ module move_top(
         .rst(rst),
         .column(column),
         .row(row),
-        .color_r(color_r_in),
-        .color_b(color_b_in),
-        .color_g(color_g_in),
-        .color_y(color_y_in),
+        .color_in(color_in),
 
         .empty(empty),
         .transfer_color(transfer_color_in)    
@@ -101,27 +94,6 @@ module move_top(
 
 // ---------------------------------------------------------------
 
-//    write_data my_delete (
-//        .pclk(clk),
-//        .rst(rst),
-//        .write(1'b0),
-//        .delete(delete),
-//        .column(column_out),
-//        .row(row_out),
-//        .color_r_in(color_r_1),
-//        .color_b_in(color_b_1),
-//        .color_g_in(color_g_1),
-//        .color_y_in(color_y_1),
-//        .transfer_color(transfer_color),
-        
-//        .color_r_out(color_r_d),
-//        .color_b_out(color_b_d),
-//        .color_g_out(color_g_d),
-//        .color_y_out(color_y_d)
-//    );
-  
-// ---------------------------------------------------------------
-
     write_data my_write (
         .pclk(clk),
         .rst(rst),
@@ -131,16 +103,10 @@ module move_top(
         .row(row_out),
         .column_del(column_del),
         .row_del(row_del),
-        .color_r_in(color_r_in),
-        .color_b_in(color_b_in),
-        .color_g_in(color_g_in),
-        .color_y_in(color_y_in),
+        .color_in(color_in),
         .transfer_color(transfer_color),
         
-        .color_r_out(color_r),
-        .color_b_out(color_b),
-        .color_g_out(color_g),
-        .color_y_out(color_y)
+        .color_out(color_out)
     );
        
 endmodule

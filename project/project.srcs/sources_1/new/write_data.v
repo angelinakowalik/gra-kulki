@@ -19,6 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`include "_color_macros.vh"
 
 module write_data(
     input wire          pclk,
@@ -29,17 +30,15 @@ module write_data(
     input wire [3:0]    row,
     input wire [3:0]    column_del,
     input wire [3:0]    row_del,
-    input wire [63:0]   color_r_in,
-    input wire [63:0]   color_b_in,
-    input wire [63:0]   color_g_in,
-    input wire [63:0]   color_y_in,
+    input wire  [`COLOR_BUS_SIZE - 1:0] color_in,
     input wire [1:0]    transfer_color,
     
-    output reg [63:0]  color_r_out,
-    output reg [63:0]  color_b_out,
-    output reg [63:0]  color_g_out,
-    output reg [63:0]  color_y_out
+    output wire [`COLOR_BUS_SIZE - 1:0] color_out
     );
+    
+    `COLOR_INPUT(color_in)
+    `COLOR_OUT_REG
+    `COLOR_OUTPUT(color_out)
     
     reg [63:0] color_r_nxt, color_b_nxt, color_g_nxt, color_y_nxt;
     reg [63:0] temp_reg, temp_del;

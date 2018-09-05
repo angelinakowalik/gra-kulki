@@ -22,32 +22,23 @@
 
 module color_ball(
     input wire pclk,
-    input wire [11:0] address_ball,
-    input wire [11:0] address_random,
-    input wire ball_en,
-    input wire random_en,
+    input wire [47:0] address,
     
     output wire [11:0] rgb_pixel_r,
     output wire [11:0] rgb_pixel_b,
     output wire [11:0] rgb_pixel_g,
     output wire [11:0] rgb_pixel_y  
     );
+
     
-    reg [11:0] address;
-    
-    always @*
-        case({ball_en, random_en})
-            2'b01: address = address_random;
-            2'b10: address = address_ball;
-            default: address = address_ball;
-        endcase
+
     
     // ---------------------------------------------------------------
     
         image_rom my_image_r (
             .clk(pclk),
             .color_in(2'b00),
-            .address(address),
+            .address(address[11:0]),
             
             .rgb(rgb_pixel_r)
         );
@@ -57,7 +48,7 @@ module color_ball(
         image_rom my_image_b (
             .clk(pclk),
             .color_in(2'b01),
-            .address(address),
+            .address(address[23:12]),
             
             .rgb(rgb_pixel_b)
         );
@@ -67,7 +58,7 @@ module color_ball(
         image_rom my_image_g (
             .clk(pclk),
             .color_in(2'b10),
-            .address(address),
+            .address(address[35:24]),
             
             .rgb(rgb_pixel_g)
         );
@@ -77,7 +68,7 @@ module color_ball(
         image_rom my_image_y (
             .clk(pclk),
             .color_in(2'b11),
-            .address(address),
+            .address(address[47:36]),
             
             .rgb(rgb_pixel_y)
         );

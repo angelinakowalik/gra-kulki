@@ -25,24 +25,10 @@ module draw_start(
     input wire          pclk,
     input wire          rst,
     input wire [`VGA_BUS_SIZE - 1:0] vga_in,
-//    input wire          start_mode,
-//    input wire [10:0]   hcount_in,
-//    input wire          hsync_in,
-//    input wire          hblnk_in,
-//    input wire [10:0]   vcount_in,
-//    input wire          vsync_in,
-//    input wire          vblnk_in,
     input wire [11:0]   mouse_xpos,
     input wire [11:0]   mouse_ypos,
-    input wire          mouse_left,
-    
-//    output reg [10:0]   hcount_out,
-//    output reg          hsync_out,
-//    output reg          hblnk_out,
-//    output reg [10:0]   vcount_out,
-//    output reg          vsync_out,
-//    output reg          vblnk_out,
-//    output reg [11:0]   rgb_out,
+    input wire          mouse_left,    
+
     output wire [`VGA_BUS_SIZE - 1:0] vga_out,
     output reg          game_en
     );
@@ -103,20 +89,20 @@ module draw_start(
         
     always @*
     begin
-        rgb_out_nxt = rgb_out;
+        rgb_out_nxt = rgb_in;
         game_en_nxt = game_en;
         // During blanking, make it it black.
         if (vblnk_in || hblnk_in) rgb_out_nxt <= 12'h0_0_0; 
         else
         begin
             // Active display, top edge, make a yellow line.
-            if (vcount_in == 0) rgb_out_nxt <= FRAME_COLOR;
+            if (vcount_in == 0) rgb_out_nxt = FRAME_COLOR;
             // Active display, bottom edge, make a red line.
-            else if (vcount_in == 599) rgb_out_nxt <= FRAME_COLOR;
+            else if (vcount_in == 599) rgb_out_nxt = FRAME_COLOR;
             // Active display, left edge, make a green line.
-            else if (hcount_in == 0) rgb_out_nxt <= FRAME_COLOR;
+            else if (hcount_in == 0) rgb_out_nxt = FRAME_COLOR;
             // Active display, right edge, make a blue line.
-            else if (hcount_in == 799) rgb_out_nxt <= FRAME_COLOR;
+            else if (hcount_in == 799) rgb_out_nxt = FRAME_COLOR;
             // Active display, interior, fill with gray.
             // You will replace this with your own test.
                     
@@ -320,8 +306,7 @@ module draw_start(
                             (mouse_xpos <= X_BTN + BTN_WIDTH) &&
                             (mouse_ypos >= Y_BTN) &&
                             (mouse_ypos <= Y_BTN + BTN_HEIGHT))
-                                game_en_nxt = 1'b1;
-        
+                                game_en_nxt = 1'b1;        
                     end            
                  
             else begin

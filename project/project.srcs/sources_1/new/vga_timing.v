@@ -17,13 +17,6 @@ module vga_timing (
     input wire  rst,
     
     output wire [`VGA_BUS_SIZE - 1:0] vga_out
-//  output reg [10:0] vcount,
-//  output wire vsync,
-//  output wire vblnk,
-//  output reg [10:0] hcount,
-//  output wire hsync,
-//  output wire hblnk,
-//  input wire pclk
   );
 
 `VGA_OUT_WIRE
@@ -45,10 +38,10 @@ module vga_timing (
                 VER_SYNC_START  = 601,
                 VER_SYNC_TIME   = 4;
                 
-    reg [10:0]  vcount_nxt = 0,  hcount_nxt = 0, vcount_temp = 0, hcount_temp = 0;
+    reg [11:0]  vcount_nxt = 0,  hcount_nxt = 0, vcount_temp = 0, hcount_temp = 0;
     reg vsync_nxt = 0, hsync_nxt = 0;
     reg vblnk_nxt = 0, hblnk_nxt = 0;
-    reg rgb_nxt = 0;                        
+    reg [11:0] rgb_nxt = 0, rgb_temp = 0;                        
 
 
     always @(posedge pclk) 
@@ -57,16 +50,18 @@ module vga_timing (
         begin
             vcount_temp  <= 0;
             hcount_temp  <= 0;
+            rgb_temp     <= 0;
         end
         else begin
             vcount_temp  <= vcount_nxt;
             hcount_temp  <= hcount_nxt;
+            rgb_temp     <= rgb_nxt;
         end
     end
 
     always @*
     begin
-       rgb_nxt = 0;
+       rgb_nxt = 12'hf_f_f;
         
         if(hcount_out >= HOR_TOTAL_TIME)
         begin
@@ -87,6 +82,6 @@ module vga_timing (
     assign hsync_out = ((hcount_out >= HOR_SYNC_START) && (hcount_out <= HOR_SYNC_START + HOR_SYNC_TIME));
     assign vblnk_out = ((vcount_out >= VER_BLANK_START) && (vcount_out <= VER_BLANK_START + VER_BLANK_TIME));
     assign vsync_out = ((vcount_out >= VER_SYNC_START) && (vcount_out <= VER_SYNC_START + VER_SYNC_TIME));
-    assign rgb_out = 12'b0;
+    assign rgb_out = rgb_temp;
           
 endmodule

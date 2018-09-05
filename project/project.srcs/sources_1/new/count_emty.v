@@ -19,19 +19,22 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`include "_color_macros.vh"
 
 module count_empty(
     input wire clk,
     input wire rst,
     input wire find_en,
-    input wire [63:0] color_0_in, color_1_in, color_2_in, color_3_in,
+    input wire [`COLOR_BUS_SIZE - 1:0] color_in,
     output reg [6:0] empty_places
     );
     reg [6:0] count_ones, empty_places_nxt;
     reg [63:0] ball_reg;
     integer idx;
     
-    always @(clk) begin
+    `COLOR_INPUT(color_in)
+    
+    always @(posedge clk) begin
         if(rst)
             empty_places <= 7'b0;
         else  
@@ -41,17 +44,13 @@ module count_empty(
                 empty_places <= 7'b0;
         end
     
-    always @* begin
-//        empty_places_nxt = empty_places;
-//        if(find_en)
-//        begin            
-            ball_reg = color_0_in | color_1_in | color_2_in | color_3_in;
+    always @* begin      
+            ball_reg = color_r_in | color_b_in | color_g_in | color_y_in;
             count_ones=0;
             for(idx=0; idx<=63; idx=idx+1) begin 
                 count_ones = count_ones + ball_reg[idx];
             end  
-            empty_places_nxt = 'd64 - count_ones;
-//        end     
+            empty_places_nxt = 'd64 - count_ones;     
     end
       
     

@@ -40,11 +40,11 @@ module char_rom_16x16(
                     8'h03: code_data = 8'h00;   //      6a
                     8'h04: code_data = 8'h00;   //      65
                     8'h05: code_data = 8'h00;   //      73 
-                    8'h06: code_data = 8'h53;   // S    74 
-                    8'h07: code_data = 8'h43;   // C    00
-                    8'h08: code_data = 8'h4F;   // O    50
-                    8'h09: code_data = 8'h52;   // R    49   
-                    8'h0a: code_data = 8'h45;   // E    45
+                    8'h06: code_data = "S";   // S    74 
+                    8'h07: code_data = "C";   // C    00
+                    8'h08: code_data = "O";   // O    50
+                    8'h09: code_data = "R";   // R    49   
+                    8'h0a: code_data = "E";   // E    45
                     8'h0b: code_data = 8'h00;   //      52
                     8'h0c: code_data = 8'h00;   //      57
                     8'h0d: code_data = 8'h00;   //      53

@@ -44,7 +44,8 @@ module transfer_ball(
     reg [5:0]   addrx, addry;
     
     localparam  WIDTH   = 50,
-                HEIGHT  = 50;
+                HEIGHT  = 50,
+                SQUARE_SIZE = 64;
                 
     always @(posedge pclk)
     begin
@@ -95,14 +96,19 @@ module transfer_ball(
     
     always @*
     begin
-        addrx = hcount_in - xpos;
-        addry = vcount_in - ypos;
+        addrx = hcount_in - xpos + SQUARE_SIZE/2;
+        addry = vcount_in - ypos + SQUARE_SIZE/2;
         rgb_out_nxt = rgb_nxt;
            
         if( (transfer == 1'b1) &&
-             (hcount_temp >= xpos) && (hcount_temp <= xpos + WIDTH) &&
-             (vcount_temp >= ypos) && (vcount_temp <= ypos + HEIGHT) &&
+             (hcount_temp >= xpos - WIDTH/2) && (hcount_temp <= xpos + WIDTH - WIDTH/2) &&
+             (vcount_temp >= ypos - HEIGHT/2) && (vcount_temp <= ypos + HEIGHT - HEIGHT/2) &&
             !(vblnk_temp || hblnk_temp))
-                rgb_out_nxt = rgb_pixel;
+            begin
+                if(rgb_pixel == 12'hf_f_f)
+                    rgb_out_nxt = rgb_nxt;
+                else
+                    rgb_out_nxt = rgb_pixel;
+            end
     end
 endmodule

@@ -59,6 +59,7 @@ module move_ctl(
     reg [3:0] column_nxt, row_nxt, column_del_nxt, row_del_nxt;
     reg [1:0] transfer_color_nxt;
     reg move_end_nxt, move_end_nxt1;
+    reg set, set_nxt;
     
     always @(posedge pclk)
     begin
@@ -95,6 +96,7 @@ module move_ctl(
             row_del     <= row_del_nxt;
             column_temp <= column_temp_nxt;
             row_temp    <= row_temp_nxt;
+            set <= set_nxt;
             
             transfer_color_out <= transfer_color_nxt;
         end
@@ -108,13 +110,14 @@ module move_ctl(
             SELECT: state_nxt =                            PUT;
             PUT:    begin
                         if(!mouse_left)
-                            state_nxt = (empty && in_range) ? SET:BACK;
+                            state_nxt = (empty && in_range 
+                            && ((column_temp != column_in) || (row_temp != row_in))) ? SET:BACK;
                         else
                             state_nxt = PUT;
                     end
             SET:    state_nxt =                            END;
-            BACK:   state_nxt =                            IDLE;
-            END:    state_nxt =                            END_END;
+            BACK:   state_nxt =                            END;
+            END:    state_nxt = set                      ? END_END : IDLE;
             END_END:state_nxt =                            IDLE;
             default: state_nxt =                           IDLE;
         endcase
@@ -122,28 +125,14 @@ module move_ctl(
     
     always @*
     begin
-//        transfer_nxt = transfer;
-//        write_nxt = write;
-//        delete_nxt = delete;
-//        move_end_nxt = move_end;
-        
-        transfer_color_nxt = transfer_color_out;
-        
-//        column_nxt = column_out;
-//        row_nxt = row_out;
-//        column_del_nxt = column_del;
-//        row_del_nxt = row_del;
-//        column_temp_nxt = column_temp;
-//        row_temp_nxt = row_temp;
-        
+
         case(state)
             IDLE:   begin
-//                        column_temp = column_in;
-//                        row_temp    = row_in;
                         transfer_nxt = 1'b0;
                         write_nxt = 1'b0;
                         delete_nxt = 1'b0;
                         move_end_nxt = 1'b0;      
+                        set_nxt = 1'b0;
                         column_temp_nxt = column_in;
                         row_temp_nxt = row_in;
                         transfer_color_nxt = transfer_color_in;
@@ -162,6 +151,7 @@ module move_ctl(
                         delete_nxt = 1'b0;  
                         write_nxt = 1'b0;
                         transfer_nxt = 1'b0;
+                        set_nxt = 1'b0;
                         
                         column_nxt = column_out;
                         row_nxt = row_out;
@@ -170,12 +160,10 @@ module move_ctl(
                     end
             SELECT: begin
                         column_del_nxt = column_temp;
-                        row_del_nxt = row_temp;
-//                        column_nxt = column_in;
-//                        row_nxt = row_in;                        
+                        row_del_nxt = row_temp;                 
                         transfer_nxt = 1'b1;
                         delete_nxt = 1'b1;
-                        
+                        set_nxt = 1'b0;
                         write_nxt = 1'b0;
                         move_end_nxt = 1'b0; 
                         transfer_color_nxt = transfer_color_out;
@@ -187,7 +175,7 @@ module move_ctl(
                     end 
             PUT:    begin
                         delete_nxt = 1'b1;
-                        
+                        set_nxt = 1'b0;
                         write_nxt = 1'b0;
                         move_end_nxt = 1'b0; 
                         transfer_nxt = 1'b1;
@@ -205,6 +193,7 @@ module move_ctl(
                         row_nxt = row_in;
                         transfer_nxt = 1'b0;
                         write_nxt = 1'b1;
+                        set_nxt = 1'b1;
                         
                         delete_nxt = 1'b0;
                         move_end_nxt = 1'b0; 
@@ -220,6 +209,7 @@ module move_ctl(
                         row_nxt = row_temp;
                         transfer_nxt = 1'b0;
                         write_nxt = 1'b1;
+                        set_nxt = 1'b0;
                         
                         delete_nxt = 1'b0; 
                         move_end_nxt = 1'b0;      
@@ -233,6 +223,7 @@ module move_ctl(
             END:    begin
                         move_end_nxt = 1'b0;
                         write_nxt = 1'b1;
+                        set_nxt = 1'b0;
                         
                         delete_nxt = 1'b0; 
                         transfer_nxt = 1'b0;
@@ -247,7 +238,7 @@ module move_ctl(
                     end
             END_END: begin
                         move_end_nxt = 1'b1;
-                        
+                        set_nxt = 1'b0;
                         write_nxt = 1'b0;
                         delete_nxt = 1'b0; 
                         transfer_nxt = 1'b0;

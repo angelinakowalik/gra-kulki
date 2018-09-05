@@ -23,6 +23,7 @@
 module my_delay(
     input wire pclk,
     input wire [11:0] xpos, ypos,
+    
     output reg [11:0] xpos_d, ypos_d
     );
     

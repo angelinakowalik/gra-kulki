@@ -20,6 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "_vga_macros.vh"
+`include "_color_macros.vh"
 
 module vga_draw (
 	input wire pclk,
@@ -32,10 +33,7 @@ module vga_draw (
     input wire end_mode,
     input wire [5:0] random_color,
     input wire [11:0] score,
-    input wire [63:0] color_r,
-    input wire [63:0] color_b,
-    input wire [63:0] color_g,
-    input wire [63:0] color_y,
+    input wire [`COLOR_BUS_SIZE - 1 : 0] color_reg,
     input wire [1:0] transfer_color,
     input wire transfer,
 	
@@ -44,8 +42,7 @@ module vga_draw (
     output wire [3:0] red_out,
     output wire [3:0] green_out,
     output wire [3:0] blue_out,
-    output wire game_en,
-    output wire end_en	
+    output wire game_en	
 	);
 	
 	wire [10:0] vcount, hcount, vcount_out_b, hcount_out_b,vcount_out_ball, hcount_out_ball, hcount_out_ctl, vcount_out_ctl;
@@ -56,6 +53,7 @@ module vga_draw (
 	wire [11:0] rgb_pixel_b, rgb_pixel_g, rgb_pixel_2;
 	wire en_m;
 	wire [2:0] color_from_reg;
+	wire s2m_game_en, e2m_game_en;
 	
 	wire [`VGA_BUS_SIZE - 1:0] vga_timing, vga_start, vga_game, vga_end, vga_mux;
 	
@@ -63,13 +61,8 @@ module vga_draw (
 	vga_timing my_timing (
 		.pclk(pclk),
 		.rst(rst),
-		.vga_out(vga_timing)	
-//		.vcount(vcount),
-//		.vsync(vsync),
-//		.vblnk(vblnk),
-//		.hcount(hcount),
-//		.hsync(hsync),
-//		.hblnk(hblnk)
+		
+		.vga_out(vga_timing)
 	);
 		
 // ---------------------------------------------------------------
@@ -81,6 +74,7 @@ module vga_draw (
         .mouse_xpos(xpos),
         .mouse_ypos(ypos),
         .mouse_left(mouse_left),
+        
         .vga_out(vga_start),
         .game_en(game_en)
     );
@@ -95,16 +89,24 @@ module vga_draw (
         .ypos(ypos),
         .score(score),
         .random_color(random_color),
-        .color_r(color_r),
-        .color_b(color_b),
-        .color_g(color_g),
-        .color_y(color_y),
+        .color_reg(color_reg),
         .vga_in(vga_timing),
         
         .vga_out(vga_game)
     );	
 
 // ---------------------------------------------------------------
+
+    draw_end my_end (
+        .pclk(pclk),
+        .rst(rst),
+        .score(score),
+        .vga_in(vga_timing),
+    
+        .vga_out(vga_end)
+    );
+    
+// ---------------------------------------------------------------    
 
     vga_mux my_mux (
         .vga_start(vga_start),
@@ -138,12 +140,10 @@ module vga_draw (
         .green_out(green_out),
         .blue_out(blue_out)
     );
+    
+// ---------------------------------------------------------------
 	
 	assign hsync_out = vga_mux[36];
 	assign vsync_out = vga_mux[37];
-	/*
-        assign red_out_m = rgb_out_b[11:8];
-        assign green_out_m = rgb_out_b[7:4];
-        assign blue_out_m = rgb_out_b[3:0];
-        */
+	
 endmodule

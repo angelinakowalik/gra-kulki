@@ -26,7 +26,6 @@ module random_colors(
     input wire enable,
     
     output reg [5:0] random_numbers
-//    output reg find_en
     );
     
         wire [1:0] random_number_1, random_number_2, random_number_3;
