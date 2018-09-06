@@ -31,12 +31,7 @@ module random_top(
     output reg [5:0] random_colors_out,
     output wire end_game,
     output wire find_end
-    );
-    
-    `COLOR_INPUT(color_in)
-    `COLOR_OUT_REG
-    `COLOR_OUTPUT(color_out)
-            
+    );             
             
     reg [2:0] state_nxt, state;
     wire find_en_start;

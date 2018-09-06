@@ -43,7 +43,7 @@ reg start_mode_nxt, game_mode_nxt, end_mode_nxt;
 
 	always @(posedge pclk) begin
 		if(rst) begin
-			state        <= state;
+			state        <= 0;
 			start_mode   <= 0;
 			game_mode    <= 0;
 			end_mode     <= 0;

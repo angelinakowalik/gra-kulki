@@ -69,7 +69,7 @@ module draw_background (
             rgb_out_nxt = rgb_in;
             
             // During blanking, make it it black.
-            if (vblnk_in || hblnk_in) rgb_out_nxt = 12'h0_0_0; 
+            if (vblnk_in || hblnk_in) rgb_out_nxt = rgb_in; 
             else
             begin
              // Active display, top edge, make a yellow line.

@@ -37,7 +37,6 @@ module core(
     output wire end_en
     );    
     
-//    reg [`COLOR_BUS_SIZE - 1:0] color_in;
     wire [`COLOR_BUS_SIZE - 1:0] color_find, color_mv, color_disp;
     wire [9:0] points_in;
     wire [9:0] points_out;
@@ -46,29 +45,7 @@ module core(
     wire find_en, move_en, disp_en;
     wire find_en_nxt, move_en_nxt, disp_en_nxt, rnd_col_en_nxt;
     
-//    `COLOR_INPUT(color_in)
-//    `VGA_OUT_REG
-//    `VGA_OUTPUT(color_in)
 
-//    always @(posedge clk) begin
-//        if(rst)
-//        begin
-//            color_r_in      <= 63'b0;
-//            color_b_in      <= 63'b0;
-//            color_g_in      <= 63'b0;
-//            color_y_in      <= 63'b0;
-            
-//        end  
-//        else begin
-//            color_r_in      <= color_r_out;
-//            color_b_in      <= color_b_out;
-//            color_g_in      <= color_g_out;
-//            color_y_in      <= color_y_out;
-            
-//        end
-//    end
-
-    
 // ---------------------------------------------------------------
 
     control_ms machine_states (

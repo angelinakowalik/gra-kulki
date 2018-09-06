@@ -72,12 +72,18 @@ module control_ms(
             move_en <= 0;
             move_ch <= 0;
             rand <= 0;
+            disp_en <= 0;
         
             color_r_out <= 0;
             color_b_out <= 0;
             color_g_out <= 0;
             color_y_out <= 0;  
             points_in <= 0; 
+            
+            move_ch_nxt1 <= 0;
+            move_ch_nxt2 <= 0;
+            move_ch_nxt3 <= 0;
+            move_ch_nxt4 <= 0;
         end
         
         else begin
@@ -87,8 +93,6 @@ module control_ms(
             color_b_out <= color_b_nxt;
             color_g_out <= color_g_nxt;
             color_y_out <= color_y_nxt;        
-//          random_colors_in <= random_colors_nxt;
-//          points_out <= points_in;
             rnd_col_en <= rnd_col_en_nxt;
             find_en <= find_en_nxt;
             move_en <= move_en_nxt;
@@ -108,7 +112,7 @@ module control_ms(
         case(state)
             IDLE: state_nxt = go ? START : IDLE;
             START: state_nxt = rnd_col_en ? RANDOM : START;
-            RANDOM: state_nxt =  (find_en ? RANDOM_M : RANDOM);  //find_end ?
+            RANDOM: state_nxt =  end_en ? GAME_END : (find_en ? RANDOM_M : RANDOM);
             RANDOM_M: state_nxt = end_en ? GAME_END : (find_end ? RANDOM_NXT : RANDOM_M);
             RANDOM_NXT: state_nxt = DISAPPEAR;
             
@@ -119,7 +123,7 @@ module control_ms(
             DISAPPEAR: state_nxt = disp_en ? DISP_NXT : DISAPPEAR;
             DISP_NXT: state_nxt = rand ? MOVE : RANDOM;
             
-            GAME_END: state_nxt = IDLE; //mouse_left ? START : GAME_END;
+            GAME_END: state_nxt = IDLE;
             default: state_nxt = IDLE;
         endcase
     end
@@ -297,8 +301,6 @@ module control_ms(
                 move_ch_nxt = 1'b0; 
                 rand_next = 1'b0;
             end            
-            
-            //default: state_nxt = IDLE;
         endcase
     end    
     

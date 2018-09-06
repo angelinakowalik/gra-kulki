@@ -42,7 +42,7 @@ module find_random_empty(
     reg [63:0] clr0_temp1, clr0_temp2, clr0_temp3, clr1_temp1, clr1_temp2, clr1_temp3;
     reg [63:0] clr2_temp1, clr2_temp2, clr2_temp3, clr3_temp1, clr3_temp2, clr3_temp3;
     reg [63:0] color_r_nxt, color_b_nxt, color_g_nxt, color_y_nxt;
-    reg [20:0] random_empty;//, random_empty_nxt;
+    reg [20:0] random_empty, random_empty_nxt;
    
     always @(posedge clk) begin
         if(reset) begin
@@ -57,12 +57,15 @@ module find_random_empty(
             color_b_out <= color_b_nxt;
             color_g_out <= color_g_nxt;
             color_y_out <= color_y_nxt;
-//            random_empty <= random_empty_nxt;
+            random_empty <= random_empty_nxt;
         end
     end
     
     
     always @* begin
+    random_empty_nxt[6:0] = random_empty[6:0];
+    random_empty_nxt[13:7] = random_empty[13:7];
+    random_empty_nxt[20:14] = random_empty[20:14];
     if(find_en) begin
         counter = -1;
         n=0;
@@ -73,38 +76,12 @@ module find_random_empty(
                 if((counter == random_number[6:0]) | (counter == random_number[13:7]) | (counter == random_number[20:14])) begin
                     n = n+1;
                     case(n)
-                        1: begin random_empty[6:0] = idx;
-//                                 random_empty_nxt[13:7] = 0;
-//                                 random_empty_nxt[20:14] = 0;
-                           end
-                        2: begin 
-//                                random_empty_nxt[6:0] = random_empty[6:0];
-                                random_empty[13:7] = idx;
-//                                random_empty_nxt[20:14] = random_empty[20:14];
-                           end
-                        3: begin
-//                                random_empty_nxt[6:0] = random_empty[6:0];
-//                                random_empty_nxt[13:7] = random_empty[13:7];
-                                random_empty[20:14] = idx;
-                           end
-//                        default: begin
-//                                random_empty_nxt[6:0] = random_empty[6:0];
-//                                random_empty_nxt[13:7] = random_empty[13:7];
-//                                random_empty_nxt[20:14] = random_empty[20:14];
-//                        end
+                        1: random_empty_nxt[6:0] = idx;
+                        2: random_empty_nxt[13:7] = idx;
+                        3: random_empty_nxt[20:14] = idx;
                     endcase
                 end
-//                else begin
-//                    random_empty_nxt[6:0] = random_empty[6:0];
-//                    random_empty_nxt[13:7] = random_empty[13:7];
-//                    random_empty_nxt[20:14] = random_empty[20:14];
-//                end
             end
-//                else begin
-//                random_empty_nxt[6:0] = random_empty[6:0];
-//                random_empty_nxt[13:7] = random_empty[13:7];
-//                random_empty_nxt[20:14] = random_empty[20:14];
-//            end
         end    
      
         ball_reg_temp_1 = 1'b1 << random_empty[6:0];

@@ -145,9 +145,14 @@ module top (
  
   always @(posedge pclk)
   begin
-    // Just pass these through.
-    hs <= hsync_out;
-    vs <= vsync_out;  
+    if(rst) begin
+        hs <= 0;    
+        vs <= 0;
+    end
+    else begin
+        hs <= hsync_out;
+        vs <= vsync_out;  
+    end
   end
 
     assign r = red_out;

@@ -93,7 +93,7 @@ module find_random_top(
     
     always @* begin
             ball_reg_nxt = (color_r_tmp1 | color_b_tmp1 | color_g_tmp1 | color_y_tmp1);
-            if((empty_places<3) && find_en) end_game_nxt = 1;
+            if((empty_places <= 3) && find_en) end_game_nxt = 1;
             else end_game_nxt = 0;
             if((ball_reg_out > ball_reg_in) && find_en_nxt6) find_end_nxt = 1; 
             else find_end_nxt = 0;
