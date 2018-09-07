@@ -22,6 +22,8 @@
 `include "_vga_macros.vh"
 
 module vga_mux(
+    input wire clk,
+    input wire rst,
     input wire [`VGA_BUS_SIZE - 1:0] vga_start,
     input wire [`VGA_BUS_SIZE - 1:0] vga_game,
     input wire [`VGA_BUS_SIZE - 1:0] vga_end,
@@ -29,11 +31,18 @@ module vga_mux(
     input wire game_mode,
     input wire end_mode,
       
-    output wire [`VGA_BUS_SIZE - 1:0] vga_out
+    output reg [`VGA_BUS_SIZE - 1:0] vga_out
     );
     
     reg [`VGA_BUS_SIZE - 1:0] vga_nxt;
-
+    
+    always @(posedge clk)
+    begin
+        if(rst)
+            vga_out <= vga_start;
+        else
+            vga_out <= vga_nxt;
+    end
     
     always @*
     begin
@@ -44,6 +53,4 @@ module vga_mux(
             default: vga_nxt = vga_start;
         endcase
     end
-    
-    assign vga_out = vga_nxt;
 endmodule

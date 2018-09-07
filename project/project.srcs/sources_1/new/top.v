@@ -45,7 +45,7 @@ module top (
 // ---------------------------------------------------------------
     clk_wiz_0 my_clk_wiz (
         .clk(clk),
-        .reset(rst),
+        .reset(1'b0),
         .locked(locked),
         .clk100MHz(mclk),
         .clk40MHz(vclk),

@@ -79,7 +79,7 @@ module draw_background (
 				// Active display, left edge, make a green line.
 				else if (hcount_in == 0) rgb_out_nxt = FRAME_COLOR;
 				// Active display, right edge, make a blue line.
-				else if (hcount_in == 799) rgb_out_nxt = FRAME_COLOR;
+				else if (hcount_in == 798) rgb_out_nxt = FRAME_COLOR;
 				// Active display, interior, fill with gray.
               // You will replace this with your own test.
 		

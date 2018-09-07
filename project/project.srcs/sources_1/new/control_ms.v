@@ -66,7 +66,7 @@ module control_ms(
                 
     always @(posedge clk) begin
         if(reset)begin
-            state <= 0;
+            state <= IDLE;
             rnd_col_en <= 0;
             find_en <= 0;
             move_en <= 0;

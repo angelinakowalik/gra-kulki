@@ -109,6 +109,8 @@ module vga_draw (
 // ---------------------------------------------------------------    
 
     vga_mux my_mux (
+        .clk(pclk),
+        .rst(rst),
         .vga_start(vga_start),
         .vga_game(vga_game),
         .vga_end(vga_end),
